@@ -987,3 +987,6 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 61 more
+2024-10-04 22:33:20.277276+07:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER_DEMUSER_DEMO" not found; SQL statement:
+SELECT * FROM USER_DEMUSER_DEMO O COMPANY [42102-224]
