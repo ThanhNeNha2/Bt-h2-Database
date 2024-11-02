@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Personnel</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6 col-12 mx-auto">
+          <h3>Update Personnel</h3>
+          <hr />
+
+          <!-- Form for updating a personnel -->
+          <form
+            th:action="@{/personnel/update}"
+            th:object="${updatePersonnel}"
+            method="post"
+          >
+            <!-- Hidden input for the personnel ID -->
+            <div class="mb-3" style="display: none">
+              <label class="form-label">Id:</label>
+              <input type="text" class="form-control" th:field="*{id}" />
+            </div>
+
+            <!-- Input for name -->
+            <div class="mb-3">
+              <label class="form-label">Name:</label>
+              <input type="text" class="form-control" th:field="*{name}" />
+            </div>
+
+            <!-- Input for email -->
+            <div class="mb-3">
+              <label class="form-label">Email:</label>
+              <input type="text" class="form-control" th:field="*{email}" />
+            </div>
+
+            <!-- Input for country -->
+            <div class="mb-3">
+              <label class="form-label">Country:</label>
+              <input type="text" class="form-control" th:field="*{country}" />
+            </div>
+
+            <!-- Input for position -->
+            <div class="mb-3">
+              <label class="form-label">Position:</label>
+              <input type="text" class="form-control" th:field="*{position}" />
+            </div>
+
+            <button type="submit" class="btn btn-warning">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table NV_CP</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12 mx-auto">
+          <div class="d-flex justify-content-between">
+            <h3>Table NV_CP</h3>
+            <a href="/addNV_CP" class="btn btn-primary">Create NV_CP</a>
+          </div>
+
+          <hr />
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Personnel ID</th>
+                <th>Company ID</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="nvcp : ${nvcpList}">
+                <th th:text="${nvcp.id}"></th>
+                <td th:text="${nvcp.role}"></td>
+                <td th:text="${nvcp.status}"></td>
+                <td th:text="${nvcp.personnel.name}"></td>
+                <td th:text="${nvcp.company.companyName}"></td>
+                <td>
+                  <a
+                    th:href="@{/nvcp/update/{id}(id=${nvcp.id})}"
+                    class="btn btn-warning mx-2"
+                    >Update</a
+                  >
+
+                  <a
+                    th:href="@{/nvcp/delete/{id}(id=${nvcp.id})}"
+                    class="btn btn-danger mx-2"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

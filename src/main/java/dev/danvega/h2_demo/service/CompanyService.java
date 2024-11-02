@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import dev.danvega.h2_demo.domain.Company;
+import dev.danvega.h2_demo.domain.Personnel;
 import dev.danvega.h2_demo.repository.CompanyRepository;
 import dev.danvega.h2_demo.repository.UserRepository;
 
@@ -20,6 +21,11 @@ public class CompanyService {
 
     public Company saveOrUpdate(Company company) {
         return this.companyRepository.save(company);
+    }
+
+    // Lấy Company theo ID
+    public Company getById(long id) {
+        return this.companyRepository.findById(id);
     }
 
     public List<Company> getAll() {
