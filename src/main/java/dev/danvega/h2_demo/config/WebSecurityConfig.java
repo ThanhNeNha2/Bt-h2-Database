@@ -37,9 +37,18 @@ public class WebSecurityConfig {
                 return http
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(request -> request
-                                                .anyRequest().permitAll() // Cho phép tất cả các trang đều truy cập mà
-                                                                          // không cần đăng nhập
+                                                .requestMatchers("/login", "/register").permitAll() // Cho phép truy cập
+                                                                                                    // vào /login và
+                                                                                                    // /register mà
+                                                                                                    // không cần đăng
+                                                                                                    // nhập
+                                                .anyRequest().authenticated() // Các trang khác yêu cầu đăng nhập
                                 )
+                                .formLogin(login -> login
+                                                .loginPage("/login") // Chỉ định trang đăng nhập tùy chỉnh
+                                                .defaultSuccessUrl("/") // Chuyển hướng sau khi đăng nhập thành công
+                                                .permitAll())
+
                                 .build();
         }
 }

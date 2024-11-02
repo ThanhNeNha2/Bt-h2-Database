@@ -23,7 +23,7 @@
           <hr />
 
           <!-- Form for registering a user -->
-          <form th:action="@{/register}" th:object="${newUser}" method="post">
+          <form th:action="@{/register}" th:object="${user}" method="post">
             <div class="mb-3">
               <label class="form-label">Username</label>
               <!-- Input for username -->
@@ -46,7 +46,16 @@
                 required
               />
             </div>
-
+            <div class="mb-3">
+              <label class="form-label">PasswordConfim</label>
+              <!-- Input for password -->
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Enter passwordConfirm"
+                required
+              />
+            </div>
             <button type="submit" class="btn btn-primary">Register</button>
           </form>
         </div>
