@@ -38,4 +38,5 @@ public class LoginService {
     public User findByUsername(String username) {
         return loginRepository.findByUsername(username);
     }
+
 }

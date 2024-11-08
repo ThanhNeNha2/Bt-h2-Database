@@ -29,20 +29,34 @@ public class WebSecurityConfig {
         }
 
         @Bean
-        protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                return http
-                                .csrf().disable() // Tắt bảo vệ CSRF, phù hợp cho các API
-                                .authorizeHttpRequests(request -> request
-                                                .requestMatchers("/login", "/register").permitAll() // Cho phép truy cập
-                                                                                                    // không cần đăng
-                                                                                                    // nhập vào /login
-                                                                                                    // và /register
-                                                .anyRequest().authenticated()) // Các yêu cầu khác yêu cầu đăng nhập
-                                .formLogin(login -> login
-                                                .loginPage("/login") // Chỉ định trang đăng nhập tùy chỉnh
-                                                .defaultSuccessUrl("/") // Trang chuyển tiếp sau khi đăng nhập thành
-                                                                        // công
-                                                .permitAll())
-                                .build();
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf().disable() // Tắt CSRF cho API
+                                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                                                // Cấu hình quyền truy cập cho API
+                                                .requestMatchers("/api/login", "/api/register", "/api/user",
+                                                                "/api/addUser",
+                                                                "/api/delete/{id}", "/api/update/{id}", "/register",
+                                                                "/api/userAuth")
+                                                .permitAll() // Cho phép
+                                                // tất cả
+                                                // truy cập
+                                                // vào API
+                                                // login và
+                                                // register
+                                                .requestMatchers("/companies", "/nV_CP").hasRole("USER")
+                                                .anyRequest().authenticated() // Các yêu cầu khác yêu cầu đăng nhập
+                                )
+                                .httpBasic() // Kích hoạt HTTP Basic Authentication cho API
+                                .and()
+                                .formLogin(form -> form
+                                                .loginPage("/login") // Đường dẫn trang đăng nhập của bạn
+                                                .defaultSuccessUrl("/", true) // Trang chuyển hướng sau khi đăng nhập
+                                                                              // thành công
+                                                .permitAll() // Cho phép tất cả truy cập vào trang đăng nhập và đăng ký
+                                ); // Kích hoạt form login
+
+                return http.build(); // Dùng build() để tạo SecurityFilterChain
         }
+
 }
