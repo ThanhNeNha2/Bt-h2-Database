@@ -24,4 +24,17 @@ public class LoginService {
         loginRepository.save(user);
         return true; // Đăng ký thành công
     }
+
+    public boolean login(String username, String password) {
+        User existingUser = loginRepository.findByUsername(username);
+        // Kiểm tra xem người dùng có tồn tại và mật khẩu có khớp không
+        if (existingUser != null && existingUser.getPassword().equals(password)) {
+            return true; // Đăng nhập thành công
+        }
+        return false; // Đăng nhập thất bại
+    }
+
+    public User findByUsername(String username) {
+        return loginRepository.findByUsername(username);
+    }
 }

@@ -21,17 +21,19 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getLoginPage(Model model) {
-        model.addAttribute("user", new User()); // Tạo đối tượng User rỗng
-
-        return "Login"; // Trả về trang login.html
+        model.addAttribute("user", new User());
+        return "Login";
     }
 
     @PostMapping("/login")
     public String handleLogin(@ModelAttribute("user") User user) {
+        boolean isAuthenticated = loginService.login(user.getUsername(), user.getPassword());
 
-        System.out.println("request submit " + user);
-
-        return "redirect:/"; // Chuyển hướng về trang chủ
+        if (isAuthenticated) {
+            return "redirect:/"; // Đăng nhập thành công, chuyển hướng về trang chủ
+        } else {
+            return "redirect:/login?error=true"; // Đăng nhập thất bại, quay lại trang login với lỗi
+        }
     }
 
     @GetMapping("/register")
