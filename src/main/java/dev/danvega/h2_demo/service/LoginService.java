@@ -16,11 +16,12 @@ public class LoginService {
     }
 
     public boolean register(User user) {
-        // Kiểm tra nếu username đã tồn tại
         if (loginRepository.findByUsername(user.getUsername()) != null) {
             return false; // Username đã tồn tại
         }
-        // Lưu người dùng mới vào cơ sở dữ liệu
+        // Thêm {noop} vào trước mật khẩu để Spring Security nhận biết mật khẩu không mã
+        // hóa
+        user.setPassword("{noop}" + user.getPassword());
         loginRepository.save(user);
         return true; // Đăng ký thành công
     }
