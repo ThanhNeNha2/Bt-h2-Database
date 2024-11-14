@@ -33,30 +33,34 @@ public class WebSecurityConfig {
                 http
                                 .csrf().disable() // Tắt CSRF cho API
                                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                                                // Cấu hình quyền truy cập cho API
                                                 .requestMatchers("/api/login", "/api/register", "/api/user",
-                                                                "/api/addUser",
-                                                                "/api/delete/{id}", "/api/update/{id}", "/register",
-                                                                "/api/userAuth")
-                                                .permitAll() // Cho phép
-                                                // tất cả
-                                                // truy cập
-                                                // vào API
-                                                // login và
-                                                // register
-                                                .requestMatchers("/companies", "/nV_CP").hasRole("USER")
+                                                                "/api/addUser", "/api/delete/{id}", "/api/update/{id}",
+                                                                "/register", "/api/userAuth")
+                                                .permitAll() // Cho phép tất cả truy cập vào API login và register
+                                                .requestMatchers("/companies", "/nV_CP").hasRole("USER") // Cấu hình cho
+                                                                                                         // người dùng
+                                                                                                         // có vai trò
+                                                                                                         // "USER"
+                                                                                                         // Admin có
+                                                                                                         // quyền truy
+                                                                                                         // cập tất cả
+
+                                                .requestMatchers("/userAuthTable").hasRole("ADMIN") // Chỉ cho phép
+                                                                                                    // ADMIN truy cập
+                                                                                                    // vào
+                                                                                                    // /userAuthTable
                                                 .anyRequest().authenticated() // Các yêu cầu khác yêu cầu đăng nhập
                                 )
                                 .httpBasic() // Kích hoạt HTTP Basic Authentication cho API
                                 .and()
                                 .formLogin(form -> form
+                                                // .requestMatchers("/**").hasRole("ADMIN")
                                                 .loginPage("/login") // Đường dẫn trang đăng nhập của bạn
                                                 .defaultSuccessUrl("/", true) // Trang chuyển hướng sau khi đăng nhập
                                                                               // thành công
                                                 .permitAll() // Cho phép tất cả truy cập vào trang đăng nhập và đăng ký
-                                ); // Kích hoạt form login
+                                );
 
                 return http.build(); // Dùng build() để tạo SecurityFilterChain
         }
-
 }

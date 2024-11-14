@@ -47,15 +47,25 @@
               />
             </div>
             <div class="mb-3">
-              <label class="form-label">PasswordConfim</label>
-              <!-- Input for password -->
+              <label class="form-label">Confirm Password</label>
+              <!-- Input for password confirmation -->
               <input
                 type="password"
                 class="form-control"
-                placeholder="Enter passwordConfirm"
+                placeholder="Enter password confirmation"
                 required
               />
             </div>
+
+            <!-- Dropdown for selecting role -->
+            <div class="mb-3">
+              <label class="form-label">Role</label>
+              <select class="form-select" th:field="*{role}" required>
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
+            </div>
+
             <button type="submit" class="btn btn-primary">Register</button>
           </form>
         </div>

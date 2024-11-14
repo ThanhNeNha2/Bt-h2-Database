@@ -30,9 +30,8 @@ public class RestLoginController {
     @PostMapping("/login")
     public ResponseEntity<?> handleLogin(@RequestBody User user) {
         // Kiểm tra người dùng đăng nhập
-        boolean isAuthenticated = loginService.login(user.getUsername(), user.getPassword());
-        System.out.println("user.getPassword()" + user.getPassword());
-        System.out.println("user.getUsername() " + user.getUsername());
+        boolean isAuthenticated = loginService.loginPostman(user.getUsername(), user.getPassword());
+
         System.out.println("isAuthenticated " + isAuthenticated);
         if (isAuthenticated) {
             return ResponseEntity.ok("Login successful");

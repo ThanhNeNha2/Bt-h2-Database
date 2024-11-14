@@ -18,15 +18,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Tìm người dùng trong cơ sở dữ liệu
         User user = loginRepository.findByUsername(username);
+
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        // Trả về UserDetails với mật khẩu không mã hóa
+
+        // Lấy vai trò từ đối tượng User và trả về UserDetails với các quyền tương ứng
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles("USER")
+                .roles(user.getRole()) // Sử dụng vai trò được lấy từ cơ sở dữ liệu
                 .build();
     }
 }
