@@ -1,7 +1,7 @@
 package dev.danvega.h2_demo.controller;
 
 import dev.danvega.h2_demo.domain.UserDemo;
-import dev.danvega.h2_demo.service.UserService;
+import dev.danvega.h2_demo.service.UserDemoService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +18,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class RestUserController {
 
-    private final UserService userService;
+    private final UserDemoService userService;
 
-    public RestUserController(UserService userService) {
+    public RestUserController(UserDemoService userService) {
         this.userService = userService;
     }
 

@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import dev.danvega.h2_demo.domain.User;
 import dev.danvega.h2_demo.domain.UserDemo;
 import dev.danvega.h2_demo.service.LoginService;
-import dev.danvega.h2_demo.service.UserAuthService;
+import dev.danvega.h2_demo.service.UserSevice;
 
 @RestController
 @RequestMapping("/api")
 public class RestLoginController {
 
     private final LoginService loginService;
-    private final UserAuthService userAuthService;
+    private final UserSevice userAuthService;
 
     @Autowired
-    public RestLoginController(LoginService loginService, UserAuthService userAuthService) {
+    public RestLoginController(LoginService loginService, UserSevice userAuthService) {
         this.loginService = loginService;
         this.userAuthService = userAuthService;
 
@@ -58,10 +58,10 @@ public class RestLoginController {
         }
     }
 
-    @GetMapping("/userAuth")
-    public String getHomePage(Model model) {
-        List<User> users = this.userAuthService.getAllUser();
-        return users.toString();
-    }
+    // @GetMapping("/userAuth")
+    // public String getHomePage(Model model) {
+    //     List<User> users = this.userAuthService.getAllUser();
+    //     return users.toString();
+    // }
 
 }

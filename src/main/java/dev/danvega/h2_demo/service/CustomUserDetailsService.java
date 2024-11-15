@@ -1,7 +1,15 @@
 package dev.danvega.h2_demo.service;
 
 import dev.danvega.h2_demo.domain.User;
-import dev.danvega.h2_demo.repository.LoginRepository;
+
+import dev.danvega.h2_demo.repository.UserRepository;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,26 +18,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final LoginRepository loginRepository;
+        @Autowired
+        private UserRepository userRepository; // Giả sử bạn có UserRepository để truy xuất thông tin người dùng
 
-    public CustomUserDetailsService(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
-    }
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                User user = userRepository.findByUsername(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Tìm người dùng trong cơ sở dữ liệu
-        User user = loginRepository.findByUsername(username);
+                Set<GrantedAuthority> authorities = user.getRoles().stream()
+                                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                                .collect(Collectors.toSet());
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+                return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                                authorities);
         }
-
-        // Lấy vai trò từ đối tượng User và trả về UserDetails với các quyền tương ứng
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRole()) // Sử dụng vai trò được lấy từ cơ sở dữ liệu
-                .build();
-    }
 }

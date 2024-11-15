@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.danvega.h2_demo.domain.Company;
 import dev.danvega.h2_demo.domain.UserDemo;
 import dev.danvega.h2_demo.service.CompanyService;
-import dev.danvega.h2_demo.service.UserService;
+import dev.danvega.h2_demo.service.UserDemoService;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/companies")
 public class RestCompanyController {
 
-    private final UserService userService;
+    private final UserDemoService userService;
     private final CompanyService companyService;
 
-    public RestCompanyController(UserService userService, CompanyService companyService) {
+    public RestCompanyController(UserDemoService userService, CompanyService companyService) {
         this.userService = userService;
         this.companyService = companyService;
     }

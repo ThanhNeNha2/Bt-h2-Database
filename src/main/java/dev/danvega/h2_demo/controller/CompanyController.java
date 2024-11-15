@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import dev.danvega.h2_demo.domain.Company;
 import dev.danvega.h2_demo.domain.UserDemo;
 import dev.danvega.h2_demo.service.CompanyService;
-import dev.danvega.h2_demo.service.UserService;
+import dev.danvega.h2_demo.service.UserDemoService;
 
 @Controller
 public class CompanyController {
-    private final UserService userService;
+    private final UserDemoService userService;
     private final CompanyService companyService;
 
-    public CompanyController(UserService userService, CompanyService companyService) {
+    public CompanyController(UserDemoService userService, CompanyService companyService) {
         this.userService = userService;
         this.companyService = companyService;
 

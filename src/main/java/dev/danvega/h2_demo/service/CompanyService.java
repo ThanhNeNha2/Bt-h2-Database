@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import dev.danvega.h2_demo.domain.Company;
 import dev.danvega.h2_demo.domain.Personnel;
 import dev.danvega.h2_demo.repository.CompanyRepository;
-import dev.danvega.h2_demo.repository.UserRepository;
+import dev.danvega.h2_demo.repository.UserDemoRepository;
 
 @Service
 public class CompanyService {
-    private final UserRepository userRepository;
+    private final UserDemoRepository userRepository;
     private final CompanyRepository companyRepository;
 
-    public CompanyService(UserRepository userRepository, CompanyRepository companyRepository) {
+    public CompanyService(UserDemoRepository userRepository, CompanyRepository companyRepository) {
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
     }

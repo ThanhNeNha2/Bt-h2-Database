@@ -1,7 +1,7 @@
 package dev.danvega.h2_demo.service;
 
 import dev.danvega.h2_demo.domain.UserDemo;
-import dev.danvega.h2_demo.repository.UserRepository;
+import dev.danvega.h2_demo.repository.UserDemoRepository;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserDemoService {
     @Autowired
-    private final UserRepository userRepository;
+    private final UserDemoRepository userRepository;
     // public void saveOrUpdate(UserDemo user)
     // {
     // userRepository.save(user);
@@ -21,7 +21,7 @@ public class UserService {
     // return "Xin chao minh la thanh ";
     // };
 
-    public UserService(UserRepository userRepository) {
+    public UserDemoService(UserDemoRepository userRepository) {
         this.userRepository = userRepository;
     }
 
