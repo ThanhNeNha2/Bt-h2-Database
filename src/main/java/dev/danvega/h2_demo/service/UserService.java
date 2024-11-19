@@ -15,11 +15,10 @@ import dev.danvega.h2_demo.repository.RoleRepository;
 import dev.danvega.h2_demo.repository.UserRepository;
 
 @Service
-public class UserSevice {
-     @Autowired
+public class UserService {
+    @Autowired
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    
 
     public void saveOrUpdateUser(User user) {
         if (user.getId() != null) {
@@ -33,10 +32,10 @@ public class UserSevice {
             userRepository.save(user);
         }
     }
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }
-
 
     public List<User> getAllUsers() {
         Iterable<User> iterable = userRepository.findAll();
@@ -44,6 +43,9 @@ public class UserSevice {
                 .collect(Collectors.toList());
     }
 
+    public List<User> getAllUserApi() {
+        return userRepository.findAll();
+    }
 
     public User findById(Integer id) {
         Optional<User> user = userRepository.findById(id);

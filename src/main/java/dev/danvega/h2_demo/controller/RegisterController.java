@@ -1,6 +1,5 @@
 package dev.danvega.h2_demo.controller;
 
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,7 @@ import dev.danvega.h2_demo.domain.User;
 import dev.danvega.h2_demo.repository.RoleRepository;
 import dev.danvega.h2_demo.repository.UserRepository;
 
-import java.util.HashSet; 
+import java.util.HashSet;
 import java.util.Set;
 
 @Controller

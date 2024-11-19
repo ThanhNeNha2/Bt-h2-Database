@@ -23,7 +23,7 @@ public class UserDemoController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/userDemo")
     public String getHomePage(Model model) {
         List<UserDemo> users = this.userService.getAllUser();
         model.addAttribute("arrUsers", users);
