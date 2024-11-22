@@ -3,12 +3,16 @@ package dev.danvega.h2_demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.core.Authentication;
 import dev.danvega.h2_demo.domain.Role;
 import dev.danvega.h2_demo.domain.User;
 import dev.danvega.h2_demo.domain.UserDTO;
+import dev.danvega.h2_demo.jwt.JwtService;
 import dev.danvega.h2_demo.repository.RoleRepository;
 import dev.danvega.h2_demo.repository.UserRepository;
 import dev.danvega.h2_demo.service.UserService;
@@ -25,6 +29,11 @@ public class RestUserRole {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private UserService userService;
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     public RestUserRole(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
@@ -77,4 +86,17 @@ public class RestUserRole {
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
 
+    @PostMapping("/generateToken")
+    public String authenticateAndGetToken(@RequestBody UserDTO authRequest) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(
+                        authRequest.getUsername(),
+                        authRequest.getPassword()));
+
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(authRequest.getUsername());
+        } else {
+            throw new UsernameNotFoundException("Invalid user request!");
+        }
+    }
 }

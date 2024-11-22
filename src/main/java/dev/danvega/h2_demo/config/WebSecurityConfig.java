@@ -1,5 +1,8 @@
 package dev.danvega.h2_demo.config;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,12 +17,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
+import dev.danvega.h2_demo.jwt.JwtAuthFilter;
 import dev.danvega.h2_demo.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+    @Autowired
+    private JwtAuthFilter authFilter;
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
@@ -44,15 +53,24 @@ public class WebSecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(List.of("http://localhost:3000"));
+                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                            config.setAllowedHeaders(List.of("*"));
+                            return config;
+                        }))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/process-register").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/companies").hasRole("ADMIN")
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/register", "/api/generateToken", "/h2-console/*").permitAll()
                         .anyRequest().authenticated())
                 .headers(httpSecurityHeadersConfigurer -> {
                     httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);
@@ -62,7 +80,8 @@ public class WebSecurityConfig {
                         .permitAll()) // Sử dụng trang login mặc định
                 .logout(config -> config
                         .logoutSuccessUrl("/login")) // Sau khi logout, chuyển về /login
-                .build();
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
 }
