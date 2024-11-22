@@ -1,15 +1,19 @@
 package dev.danvega.h2_demo.controller;
 
 import java.util.List;
+import dev.danvega.h2_demo.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import dev.danvega.h2_demo.domain.User;
-import dev.danvega.h2_demo.domain.UserDemo;
 import dev.danvega.h2_demo.service.LoginService;
 import dev.danvega.h2_demo.service.UserService;
 
@@ -19,6 +23,10 @@ public class RestLoginController {
 
     private final LoginService loginService;
     private final UserService userAuthService;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     public RestLoginController(LoginService loginService, UserService userAuthService) {
@@ -64,4 +72,17 @@ public class RestLoginController {
         return users.toString();
     }
 
+    @PostMapping("/generateToken")
+    public String authenticateAndGetToken(@RequestBody User user) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(
+                        user.getUsername(),
+                        user.getPassword()));
+
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(user.getUsername());
+        } else {
+            throw new UsernameNotFoundException("Invalid user request!");
+        }
+    }
 }

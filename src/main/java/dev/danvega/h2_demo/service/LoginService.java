@@ -52,9 +52,10 @@ public class LoginService {
             String storedPassword = existingUser.getPassword();
 
             // Loại bỏ {noop} nếu tồn tại trong storedPassword
-            if (storedPassword.startsWith("{noop}")) {
-                storedPassword = storedPassword.substring("{noop}".length());
-            }
+
+            // if (storedPassword.startsWith("{noop}")) {
+            // storedPassword = storedPassword.substring("{noop}".length());
+            // }
 
             System.out.println("pass data " + storedPassword);
             System.out.println("pass truyen vao " + password);
