@@ -3,16 +3,19 @@ package dev.danvega.h2_demo.service;
 import dev.danvega.h2_demo.domain.User;
 import dev.danvega.h2_demo.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
 
     private final LoginRepository loginRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public LoginService(LoginRepository loginRepository) {
+    public LoginService(LoginRepository loginRepository, PasswordEncoder passwordEncoder) {
         this.loginRepository = loginRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean register(User user) {
@@ -21,7 +24,8 @@ public class LoginService {
         }
         // Thêm {noop} vào trước mật khẩu để Spring Security nhận biết mật khẩu không mã
         // hóa
-        user.setPassword("{noop}" + user.getPassword());
+        String hashPassword = this.passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPassword);
         loginRepository.save(user);
         return true; // Đăng ký thành công
     }
