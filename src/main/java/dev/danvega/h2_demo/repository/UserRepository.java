@@ -1,18 +1,17 @@
 package dev.danvega.h2_demo.repository;
 
-import dev.danvega.h2_demo.domain.UserDemo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import dev.danvega.h2_demo.domain.User;
+
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
+public interface UserRepository extends JpaRepository<User, Long> {
+    List<User> findAll();
 
-public interface UserRepository extends JpaRepository<UserDemo, Long> {
-    List<UserDemo> findAll();
+    User save(User thanh);
 
-    UserDemo save(UserDemo thanh);
+    User findById(long id);
 
-    UserDemo findById(long id);
-
-    UserDemo deleteById(long id);
-
+    User deleteById(long id);
 }

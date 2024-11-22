@@ -1,83 +1,84 @@
 package dev.danvega.h2_demo.controller;
 
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import dev.danvega.h2_demo.domain.UserDemo;
-
+import dev.danvega.h2_demo.domain.User;
 import dev.danvega.h2_demo.service.UserService;
+import dev.danvega.h2_demo.service.UserDemoService;
 
 @Controller
 public class UserController {
+    private final UserService userAuthService;
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService userAuthService) {
+        this.userAuthService = userAuthService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/userAuthTable")
     public String getHomePage(Model model) {
-        List<UserDemo> users = this.userService.getAllUser();
+        List<User> users = this.userAuthService.getAllUser();
         model.addAttribute("arrUsers", users);
-        return "UserTable";
+        return "UserAuthTable";
     }
 
-    @RequestMapping("/create")
-    public String getCreatePage(Model model) {
-        model.addAttribute("newUser", new UserDemo());
+    // CREATE USER
 
-        return "CreateUser";
-    }
+    // @RequestMapping("/create")
+    // public String getCreatePage(Model model) {
+    // model.addAttribute("newUser", new User());
 
-    @RequestMapping("/create-user")
-    public String CreateUser(Model model, @ModelAttribute("newUser") UserDemo user) {
-        System.out.println("haha vao day roi " + user);
-        this.userService.handleSaveUser(user);
-        return "redirect:/";
-    }
+    // return "UserAuthCreate";
+    // }
+
+    // @RequestMapping("/create-userAuth")
+    // public String CreateUser(Model model, @ModelAttribute("newUser") User user) {
+    // System.out.println("haha vao day roi " + user);
+    // this.userAuthService.handleSaveUser(user);
+    // return "redirect:/";
+    // }
 
     // UPDATE USER
-    @RequestMapping("/admin/user/update/{id}")
+
+    @RequestMapping("/admin/userAuth/update/{id}")
     public String getUpdateUserPage(Model model, @PathVariable long id) {
-        UserDemo user = this.userService.getUserDetailById(id);
+        User user = this.userAuthService.getUserDetailById(id);
         model.addAttribute("updateUser", user);
-        return "UpdateUser";
+        return "UserAuthUpdate";
     }
 
-    @PostMapping("/admin/user/update")
-    public String PostUpdateUser(Model model, @ModelAttribute("updateUser") UserDemo user) {
-        UserDemo currentUser = this.userService.getUserDetailById(user.getId());
+    @PostMapping("/admin/userAuth/update")
+    public String PostUpdateUser(Model model, @ModelAttribute("updateUser") User user) {
+        User currentUser = this.userAuthService.getUserDetailById(user.getId());
         if (currentUser != null) {
-            currentUser.setFirstName(user.getFirstName());
-            currentUser.setLastName(user.getLastName());
+            currentUser.setUsername(user.getUsername());
+            currentUser.setPassword(user.getPassword());
 
-            this.userService.handleSaveUser(user);
+            this.userAuthService.handleSaveUser(user);
         }
-        return "redirect:/";
+        return "redirect:/userAuthTable";
     }
 
-    // DELETE user
+    // DELETE USER
 
-    @RequestMapping("/admin/user/delete/{id}")
+    @RequestMapping("/admin/userAuth/delete/{id}")
     public String getDeleteUserPage(Model model, @PathVariable long id) {
-        UserDemo user = this.userService.getUserDetailById(id);
+        User user = this.userAuthService.getUserDetailById(id);
         model.addAttribute("deleteUser", user);
-        return "DeleteUser";
+        return "UserAuthDelete";
     }
 
-    @PostMapping("/admin/user/delete")
-    public String PostDeleteUser(Model model, @ModelAttribute("deleteUser") UserDemo user) {
+    @PostMapping("/admin/userAuth/delete")
+    public String PostDeleteUser(Model model, @ModelAttribute("deleteUser") User user) {
         System.out.println("check ne nha " + user.getId());
-        this.userService.handleDeleteUser(user.getId());
-        return "redirect:/";
+        this.userAuthService.handleDeleteUser(user.getId());
+        return "redirect:/userAuthTable";
     }
-
 }

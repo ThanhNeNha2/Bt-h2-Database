@@ -13,43 +13,42 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import dev.danvega.h2_demo.service.CustomUserDetailsService;
 import dev.danvega.h2_demo.service.LoginService;
-import dev.danvega.h2_demo.service.UserAuthService;
+import dev.danvega.h2_demo.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    // private final CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-    // public WebSecurityConfig(CustomUserDetailsService userDetailsService) {
-    // this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService);
+        return authenticationManagerBuilder.build();
+    }
+
+    // @Bean
+    // public UserDetailsService userDetailsService(LoginService loginService) {
+    // return new CustomUserDetailsService(loginService);
     // }
 
     // @Bean
-    // public AuthenticationManager authManager(HttpSecurity http) throws Exception
-    // {
-    // AuthenticationManagerBuilder authenticationManagerBuilder = http
-    // .getSharedObject(AuthenticationManagerBuilder.class);
-    // authenticationManagerBuilder.userDetailsService(userDetailsService);
-    // return authenticationManagerBuilder.build();
+    // public DaoAuthenticationProvider authProvider(
+    // PasswordEncoder passwordEncoder,
+    // UserDetailsService userDetailsService) {
+    // DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    // authProvider.setUserDetailsService(userDetailsService);
+    // authProvider.setPasswordEncoder(passwordEncoder);
+    // ;
+    // // authProvider.setHideUserNotFoundExceptions(false);
+    // return authProvider;
     // }
-
-    @Bean
-    public UserDetailsService userDetailsService(LoginService loginService) {
-        return new CustomUserDetailsService(loginService);
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authProvider(
-            PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder);
-        ;
-        // authProvider.setHideUserNotFoundExceptions(false);
-        return authProvider;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

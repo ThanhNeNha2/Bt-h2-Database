@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final LoginRepository loginRepository;
+    private final LoginService loginService;
 
-    public CustomUserDetailsService(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public CustomUserDetailsService(LoginService loginService) {
+        this.loginService = loginService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Tìm người dùng trong cơ sở dữ liệu
-        User user = loginRepository.findByUsername(username);
+        User user = this.loginService.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
