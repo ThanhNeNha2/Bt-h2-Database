@@ -50,7 +50,8 @@ public class WebSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/api/register", "/api/userAuth", "/api/generateToken", "/h2-console/*")
+                        .requestMatchers("/api/login", "/api/register", "/api/userAuth", "/api/generateToken",
+                                "/h2-console/*")
                         .permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/companies").hasRole("ADMIN")

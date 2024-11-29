@@ -3,6 +3,7 @@ package dev.danvega.h2_demo.service;
 import dev.danvega.h2_demo.domain.User;
 import dev.danvega.h2_demo.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,18 +51,12 @@ public class LoginService {
 
         if (existingUser != null) {
             String storedPassword = existingUser.getPassword();
-
-            // Loại bỏ {noop} nếu tồn tại trong storedPassword
-
-            // if (storedPassword.startsWith("{noop}")) {
-            // storedPassword = storedPassword.substring("{noop}".length());
-            // }
-
             System.out.println("pass data " + storedPassword);
             System.out.println("pass truyen vao " + password);
 
-            // So sánh mật khẩu đã bỏ {noop}
-            if (storedPassword.equals(password)) {
+            // Kiểm tra mật khẩu với BCrypt
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (passwordEncoder.matches(password, storedPassword)) {
                 return true; // Đăng nhập thành công
             }
         }

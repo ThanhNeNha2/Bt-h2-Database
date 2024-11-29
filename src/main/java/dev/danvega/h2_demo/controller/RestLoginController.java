@@ -1,6 +1,9 @@
 package dev.danvega.h2_demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import dev.danvega.h2_demo.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import dev.danvega.h2_demo.domain.User;
+import dev.danvega.h2_demo.domain.UserDemo;
 import dev.danvega.h2_demo.service.LoginService;
 import dev.danvega.h2_demo.service.UserService;
 
@@ -42,7 +46,15 @@ public class RestLoginController {
 
         System.out.println("isAuthenticated " + isAuthenticated);
         if (isAuthenticated) {
-            return ResponseEntity.ok("Login successful");
+            // Lấy danh sách tất cả người dùng
+            List<User> users = this.userAuthService.getAllUser();
+
+            // Tạo response dưới dạng Map
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Login thành công");
+            response.put("users", users);
+
+            return ResponseEntity.ok(response); // Trả về JSON
         } else {
             // Trả về lỗi khi đăng nhập thất bại
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -67,9 +79,9 @@ public class RestLoginController {
     }
 
     @GetMapping("/userAuth")
-    public String getHomePage(Model model) {
+    public List<User> getHomePage(Model model) {
         List<User> users = this.userAuthService.getAllUser();
-        return users.toString();
+        return users;
     }
 
     @PostMapping("/generateToken")
